@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
+<% layout('layout/boilerplate') %>
     <h1>ALL CAMPGROUNDS</h1>
     <a href="campground/new">create</a>
     <ul>
@@ -14,5 +6,3 @@
                 <li><a href="/campground/<%= i._id %>"><%= i.title %></a></li>
             <% } %>
     </ul>
-</body>
-</html>

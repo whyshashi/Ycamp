@@ -7,9 +7,9 @@ const Campground = require("./models/campground.js");
 app.use(express.urlencoded({ extended: true }));
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
-
-
 const db = mongoose.connection;
+const ejsMate = require("ejs-mate");
+app.engine("ejs",ejsMate);
 // -----------------------------------------
 db.on("error", (error) => {
   console.error("MongoDB connection error:", error);
@@ -33,67 +33,66 @@ db.once("open", () => {
 // -----------------------------------------
 
 app.get("/", (req, res) => {
-  res.send("home");
+  res.redirect("/campground");
 });
 
-app.get("/makecampground", async (req, res) => {
-  // await Campground.insertMany({
-  //   title: "MYhome",
-  // });
+// app.get("/makecampground", async (req, res) => {
+//   // await Campground.insertMany({
+//   //   title: "MYhome",
+//   // });
 
-  await Campground.deleteMany({});
-  const d = await Campground.find();
-  res.send(d);
-});
+//   await Campground.deleteMany({});
+//   const d = await Campground.find();
+//   res.send(d);
+// });
 
 app.get("/campground", async (req, res) => {
   const data = await Campground.find();
-  res.render("home.ejs",{data});
+  res.render("home.ejs", { data });
 });
 
 app.get("/campground/:id/update", async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const data = await Campground.findById(id);
-  res.render("update.ejs",{data});
+  res.render("update.ejs", { data });
 });
 
 app.get("/campground/:id/delete", async (req, res) => {
-  const {id} = req.params;
-   await Campground.findByIdAndDelete(id);
+  const { id } = req.params;
+  await Campground.findByIdAndDelete(id);
   res.redirect("/campground");
 });
 
 app.patch("/campground/:id", async (req, res) => {
-  const {id} = req.params;
-  await Campground.findByIdAndUpdate(id,req.body);
+  const { id } = req.params;
+  await Campground.findByIdAndUpdate(id, req.body);
   res.redirect("/campground");
 });
 
 app.get("/campground/:id/update", async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const data = await Campground.findById(id);
-  res.render("update.ejs",{data});
-})
-
-app.get("/campground/new", async (req, res) => {
-  const {id} = req.params;
-  const data = await Campground.findById(id);
-  res.render("create.ejs",{data});
-}); 
-
-app.post("/campground/new", async (req, res) => {
-  const {title ,location} = await req.body;
-  const dd = await new Campground({title:title,location:location});
-  await dd.save();
-  res.redirect("/campground");
-})
-
-app.get("/campground/:id", async (req, res) => {
-  const {id} = req.params;
-  const data = await Campground.findById(id);
-  res.render("show.ejs",{data});
+  res.render("update.ejs", { data });
 });
 
+app.get("/campground/new", async (req, res) => {
+  const { id } = req.params;
+  const data = await Campground.findById(id);
+  res.render("create.ejs", { data });
+});
+
+app.post("/campground/new", async (req, res) => {
+  const { title, location } = await req.body;
+  const dd = await new Campground({ title: title, location: location });
+  await dd.save();
+  res.redirect("/campground");
+});
+
+app.get("/campground/:id", async (req, res) => {
+  const { id } = req.params;
+  const data = await Campground.findById(id);
+  res.render("show.ejs", { data });
+});
 
 app.listen(3000, () => {
   console.log("listening");
