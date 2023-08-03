@@ -1,14 +1,86 @@
 <% layout('layout/boilerplate') %>
 
-    <form action="/campground/<%=data._id%>?_method=PATCH" method="post">
-        <div>
-            <input type="text" name="title" id="title" value="<%= data.title %>">
-            <label for="title">title</label>
-        </div>
-        <div>
-            <input type="text" name="location" id="location" value="<%= data.location %>">
-            <label for="location">location</label>
-        </div>
-        <button type="submit">submit</button>
-    </form>
-    <a href="/campground">cancel</a>
+<!-- <form action="/campground/<%=data._id%>?_method=PATCH" method="post">
+  <div>
+    <input type="text" name="title" id="title" value="<%= data.title %>" />
+    <label for="title">title</label>
+  </div>
+  <div>
+    <input
+      type="text"
+      name="location"
+      id="location"
+      value="<%= data.location %>"
+    />
+    <label for="location">location</label>
+  </div>
+  <button type="submit">submit</button>
+</form>
+<a href="/campground">cancel</a> -->
+
+
+<h1>Update</h1>
+<form action="/campground/<%=data._id%>?_method=PATCH" method="post" class="needs-validation" novalidate>
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input type="text" name="title" class="form-control" id="title"  value="<%= data.title %>" required>
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="location" class="form-label">Location</label>
+    <input type="text" class="form-control" name="location" id="location" value="<%= data.location %>" required>
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="image" class="form-label">Image url</label>
+    <input type="text" class="form-control" name="image" id="image" value="<%= data.image %>" required>
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="price" class="form-label">Price</label>
+    <div class="input-group">
+      <span class="input-group-text">$</span>
+      <input type="number" name ="price" value="<%= data.price %>" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" required>
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea class="form-control" rows="3"  name="description" id="description" required><%= data.description %></textarea>
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  </div>
+  <div class="mb-3 mt-4">
+    <button type="submit" class="btn text-dark btn-outline-primary">submit</button>
+    <button type="button" class="btn btn-outline-danger "><a class="text-dark link-underline link-underline-opacity-0" href="/campground">cancel</a></button>
+  </div>
+</form>
+<script>
+  (() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>

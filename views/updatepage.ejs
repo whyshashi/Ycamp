@@ -1,0 +1,31 @@
+<% layout('layout/boilerplate') %>
+<h1 class="mb-5 fs-1 fw-bold">Update Campground</h1>
+<% for (const i of data) { %>
+<div class="card mb-3" style="max-width: 50vw">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="<%= i.image %>" class="img-fluid rounded-start" alt="image" />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="/campground/<%= i._id %>"><%= i.title %></a>
+        </h5>
+        <p class="card-text">
+          This is a wider card with supporting text below as a natural lead-in
+          to additional content. This content is a little bit longer.
+        </p>
+        <div>
+          <button type="button" class="btn btn-secondary">
+            <a
+              class="text-light link-underline link-underline-opacity-0"
+              href="/campground/<%=i._id%>/update"
+              >update</a
+            >
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>

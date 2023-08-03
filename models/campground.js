@@ -1,11 +1,11 @@
-const mongoose= require("mongoose");
- const sch = {
-    title : String,
-    price : String,
-    description:String,
-    location: String
- };
-const schema = mongoose.Schema;
+const mongoose = require("mongoose");
+const sch = {
+  title: String,
+  price: Number,
+  description: String,
+  location: String,
+  image: String,
+};
 
-const schema1 = new schema(sch);
-module.exports = mongoose.model("Campground",schema1);
+const schema1 = new mongoose.Schema(sch);
+module.exports = mongoose.model("Campground", schema1);

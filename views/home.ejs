@@ -1,8 +1,20 @@
 <% layout('layout/boilerplate') %>
-    <h1>ALL CAMPGROUNDS</h1>
-    <a href="campground/new">create</a>
-    <ul>
+    <h1 class="mb-5 fs-1 fw-bold">All Campgrounds </h1>
             <% for (const i of data) {  %>
-                <li><a href="/campground/<%= i._id %>"><%= i.title %></a></li>
+                <div class="card mb-3" style="max-width: 100vw;">
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src="<%= i.image %>" class="img-fluid rounded-start" alt="image">
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title"><%= i.title %></h5>
+                          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary"><a class="text-light link-underline link-underline-opacity-0" href="/campground/<%= i._id %>"><%= i.title %></a></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
             <% } %>
-    </ul>
