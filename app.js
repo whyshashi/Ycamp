@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const Joi = require("joi");
 const mongoose = require("mongoose");
 app.set("view engine", "ejs");
 mongoose.connect("mongodb://127.0.0.1:27017/Ycamp");
@@ -12,8 +13,7 @@ app.use(methodOverride("_method"));
 const db = mongoose.connection;
 const ejsMate = require("ejs-mate");
 app.engine("ejs", ejsMate);
-
-
+const schemaj = require("./models/validator.js");
 
 // -----------------------------------------
 db.on("error", (error) => {
@@ -37,82 +37,77 @@ db.once("open", () => {
 });
 // -----------------------------------------
 
-
-
 //HOME
 app.get("/", (req, res) => {
   res.redirect("/campground");
 });
 
-app.get("/campground", async (req, res) => {
+app.get("/campground",CatchAsync(async (req, res) => {
   const data = await Campground.find();
   res.render("home.ejs", { data });
-});
+}));
 
 // UPDATE
-app.get("/campground/updatepage", async (req, res) => {
+app.get("/campground/updatepage",CatchAsync( async (req, res) => {
   const data = await Campground.find();
   res.render("updatepage.ejs", { data });
-});
+}));
 
-app.get("/campground/:id/update", async (req, res) => {
+app.get("/campground/:id/update",CatchAsync( async (req, res) => {
   const { id } = req.params;
   const data = await Campground.findById(id);
   res.render("update.ejs", { data });
-});
+}));
 
 //DELETE
-app.get("/campground/:id/delete", async (req, res) => {
+app.get("/campground/:id/delete",CatchAsync( async (req, res) => {
   const { id } = req.params;
   await Campground.findByIdAndDelete(id);
   res.redirect("/campground");
-});
+}));
 
 //UPDATE
-app.patch("/campground/:id", async (req, res) => {
-  const { id } = req.params;
-  await Campground.findByIdAndUpdate(id, req.body);
-  res.redirect("/campground");
-});
+app.patch(
+  "/campground/:id",
+  CatchAsync(async (req, res) => {
+    const value = await schemaj.validateAsync(req.body);
+    const { id } = req.params;
+    await Campground.findByIdAndUpdate(id, req.body);
+    res.redirect("/campground");
+  })
+);
 
 //NEW
-app.get("/campground/new", async (req, res) => {
-  const { id } = req.params;
-  const data = await Campground.findById(id);
-  res.render("create.ejs", { data });
-});
+app.get("/campground/new",CatchAsync( async (req, res) => {
+  res.render("create.ejs");
+}));
 
-app.post("/campground/new", async (req, res) => {
-  const dd = await new Campground(req.body);
-  await dd.save();
-  res.redirect("/campground");
-});
-
+app.post(
+  "/campground/new",
+  CatchAsync(async (req, res) => {
+    const value = await schemaj.validateAsync(req.body);
+    const dd = await new Campground(req.body);
+    await dd.save();
+    res.redirect("/campground");
+  })
+);
 
 //SHOW
-app.get("/campground/:id", CatchAsync(async (req, res) => {
-
+app.get("/campground/:id",CatchAsync(async (req, res) => {
     const data = await Campground.findById(req.params.id);
     res.render("show.ejs", { data });
   })
 );
 
 //It will run when no get function is run
-app.all("*",(req,res,next)=>{
-  next(new AppError("page not found",404))
-})
-
-//CUSTOM ERROR
-// app.use((error, req, res, next) => {
-//   const { message = "something Went wrong", status = 404 } = error;
-//   res.status(status).send(message);
-// });
+app.all("*", (req, res, next) => {
+  next(new AppError("page not found", 404));
+});
 
 app.use((error, req, res, next) => {
-  const {status = 404,message = " some error happened "} = error;
-  res.status(status).render("errortemp.ejs", {error} );
-})
-
+  const { status = 404, message = " some error happened " } = error;
+  res.status(status).render("errortemp.ejs", { error });
+});
 
 app.listen(3000, () => {
   console.log("listening");
