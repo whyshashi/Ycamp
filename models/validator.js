@@ -15,6 +15,6 @@ const schema = Joi.object({
 
     image: Joi.string()
         .required()
-})
+}).required();
 
 module.exports = schema;

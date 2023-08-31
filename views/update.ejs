@@ -1,24 +1,5 @@
 <% layout('layout/boilerplate') %>
 
-<!-- <form action="/campground/<%=data._id%>?_method=PATCH" method="post">
-  <div>
-    <input type="text" name="title" id="title" value="<%= data.title %>" />
-    <label for="title">title</label>
-  </div>
-  <div>
-    <input
-      type="text"
-      name="location"
-      id="location"
-      value="<%= data.location %>"
-    />
-    <label for="location">location</label>
-  </div>
-  <button type="submit">submit</button>
-</form>
-<a href="/campground">cancel</a> -->
-
-
 <h1>Update</h1>
 <form action="/campground/<%=data._id%>?_method=PATCH" method="post" class="needs-validation" novalidate>
   <div class="mb-3">
@@ -64,23 +45,3 @@
     <button type="button" class="btn btn-outline-danger "><a class="text-dark link-underline link-underline-opacity-0" href="/campground">cancel</a></button>
   </div>
 </form>
-<script>
-  (() => {
-  'use strict'
-
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  const forms = document.querySelectorAll('.needs-validation')
-
-  // Loop over them and prevent submission
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-
-      form.classList.add('was-validated')
-    }, false)
-  })
-})()
-</script>
