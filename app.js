@@ -13,6 +13,7 @@ const db = mongoose.connection;
 const ejsMate = require("ejs-mate");
 app.engine("ejs", ejsMate);
 const router = require("./routing/routing.js");
+app.use(express.static('public'));
 //---------------------------------------------------------
 const schemaj = require("./models/validator.js");
 const Campground = require("./models/campground.js");
